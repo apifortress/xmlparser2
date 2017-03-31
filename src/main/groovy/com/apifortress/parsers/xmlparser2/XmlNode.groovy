@@ -16,7 +16,6 @@ class XmlNode implements IXmlItem,Iterable<XmlNode> {
     private String text
 
     public XmlNode(GPathResult item){
-        children = new XmlList()
         attributes = new HashMap<String,String>()
 
         name = item.name()
@@ -26,9 +25,10 @@ class XmlNode implements IXmlItem,Iterable<XmlNode> {
                 setAttribute(it.key,it.value)
         }
 
+        children = XmlList.convert(item.children())
+
         text = mergeTextNodes(item.localText())
 
-        children = XmlList.convert(item.children())
     }
 
     public String getAttribute(String key){
@@ -49,8 +49,16 @@ class XmlNode implements IXmlItem,Iterable<XmlNode> {
 
     public def get(String name){
         if(name.startsWith('@'))
-            return getAttribute(name.drop(1))
+            return getAttribute(name.drop(1).toString())
+        if(name=='*')
+            return children
         return children.get(name)
+    }
+
+    public def getAt(int pos){
+        if(size()==0)
+            return this
+        return children.getAt(pos)
     }
 
     public Map<String,String> attributes(){
@@ -68,16 +76,17 @@ class XmlNode implements IXmlItem,Iterable<XmlNode> {
         this.text = text
     }
 
-    public void add(XmlNode node){
-        children.add(node)
+    public boolean add(XmlNode node){
+        return children.add(node)
     }
-    public void insert(int index,XmlNode node){
-        children.add(index,node)
+
+    public boolean insert(int index,XmlNode node){
+        return children.add(index,node)
     }
 
     @Override
     Iterator<XmlNode> iterator() {
-        return children.iterator()
+        return [this].iterator()
     }
 
     public XmlList children(){
