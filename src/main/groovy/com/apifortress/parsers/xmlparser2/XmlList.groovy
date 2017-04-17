@@ -24,8 +24,12 @@ class XmlList extends LinkedList<XmlNode> implements IXmlItem {
         super()
     }
 
+    public List<String> names(){
+        return collect {it.name() }.unique()
+    }
+
     public IXmlItem get(String name){
-        def items = findAll { it.name == name }
+        def items = findAll { it.__name == name }
         if(items.isEmpty())
             return null
         if(items.size()==1)
