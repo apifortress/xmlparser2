@@ -57,6 +57,12 @@ class XmlNode implements IXmlItem,Iterable<XmlNode> {
         return __children.getAt(pos)
     }
 
+    public def pick(int quantity){
+        if(size()==0)
+            return [this]
+        retufn __children.pick(quantity)
+    }
+
     public Map<String,String> attributes(){
         return __attributes
     }
