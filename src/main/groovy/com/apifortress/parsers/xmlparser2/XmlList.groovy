@@ -36,4 +36,22 @@ class XmlList extends LinkedList<XmlNode> implements IXmlItem {
             return items[0]
         return new XmlList(items)
     }
+
+    public XmlList pick(int quantity){
+        int total = size()
+        if(total == 0)
+            return new XmlList();
+        if(quantity > total)
+            quantity = total;
+
+        ArrayList<Integer> pointers = new ArrayList<Integer>(total);
+        for(int i=0;i<total;i++)
+            pointers[i] = i;
+        Collections.shuffle(pointers);
+        pointers = pointers[0..quantity-1].sort();
+        XmlList items = new XmlList()
+        for(int pointer : pointers)
+            items.add(get(pointer));
+        return items;
+    }
 }
