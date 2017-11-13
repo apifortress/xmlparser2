@@ -135,4 +135,10 @@ class XmlNode implements IXmlItem,Iterable<XmlNode> {
             sb.append(it.key+'="'+it.value+'" ')
         }
     }
+
+    public def getProperties(){
+        if(children().names().contains('properties'))
+            return get('properties')
+        return super.getProperties()
+    }
 }
