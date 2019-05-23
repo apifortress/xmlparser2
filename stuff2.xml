@@ -1,0 +1,8 @@
+<root>
+    <foo attr1="yay">bar</foo>
+    <items>
+        <item>gino</item>
+        <item>pino</item>
+        <item>cane &lt; > b</item>
+    </items>
+</root>

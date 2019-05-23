@@ -1,6 +1,7 @@
 package com.apifortress.parsers.xmlparser2
 
 import groovy.util.slurpersupport.GPathResult
+import groovy.xml.XmlUtil
 
 /**
  *
@@ -105,20 +106,17 @@ class XmlNode implements IXmlItem,Iterable<XmlNode> {
 
     public String toString(){
         StringBuilder sb = new StringBuilder()
-        sb.append('<'+__name+' ')
+        sb.append('<'+__name)
         composeAttributes(sb)
-        if(__text)
-          return __text
-         else
+        sb.append('>')
         if(__children){
-            sb.append('>\n')
+
             __children.each {
                 sb.append(it.toString())
             }
-            sb.append('</'+__name+'>\n')
         }
-        else
-            sb.append('/>\n')
+        sb.append(XmlUtil.escapeXml(__text))
+        sb.append('</'+__name+'>')
         return sb.toString()
     }
 
@@ -132,7 +130,7 @@ class XmlNode implements IXmlItem,Iterable<XmlNode> {
 
     private void composeAttributes(StringBuilder sb){
         __attributes.each {
-            sb.append(it.key+'="'+it.value+'" ')
+            sb.append(' '+it.key+'="'+XmlUtil.escapeXml(it.value)+'"')
         }
     }
 
@@ -140,5 +138,9 @@ class XmlNode implements IXmlItem,Iterable<XmlNode> {
         if(children().names().contains('properties'))
             return get('properties')
         return super.getProperties()
+    }
+
+    public String asXml(){
+        return toString()
     }
 }
