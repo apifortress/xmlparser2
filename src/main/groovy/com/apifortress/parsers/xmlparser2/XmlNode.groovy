@@ -143,4 +143,7 @@ class XmlNode implements IXmlItem,Iterable<XmlNode> {
     public String asXml(){
         return toString()
     }
+    public String asXML(){
+        return toString()
+    }
 }
