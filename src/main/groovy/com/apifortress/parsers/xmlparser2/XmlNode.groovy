@@ -106,17 +106,20 @@ class XmlNode implements IXmlItem,Iterable<XmlNode> {
 
     public String toString(){
         StringBuilder sb = new StringBuilder()
-        sb.append('<'+__name)
+        sb.append('<'+__name+' ')
         composeAttributes(sb)
-        sb.append('>')
+        if(__text)
+            return __text
+        else
         if(__children){
-
+            sb.append('>\n')
             __children.each {
                 sb.append(it.toString())
             }
+            sb.append('</'+__name+'>\n')
         }
-        sb.append(XmlUtil.escapeXml(__text))
-        sb.append('</'+__name+'>')
+        else
+            sb.append('/>\n')
         return sb.toString()
     }
 
@@ -141,9 +144,21 @@ class XmlNode implements IXmlItem,Iterable<XmlNode> {
     }
 
     public String asXml(){
-        return toString()
+        return asXML()
     }
     public String asXML(){
-        return toString()
+        StringBuilder sb = new StringBuilder()
+        sb.append('<'+__name)
+        composeAttributes(sb)
+        sb.append('>')
+        if(__children){
+
+            __children.each {
+                sb.append(it.asXML())
+            }
+        }
+        sb.append(XmlUtil.escapeXml(__text))
+        sb.append('</'+__name+'>')
+        return sb.toString()
     }
 }
